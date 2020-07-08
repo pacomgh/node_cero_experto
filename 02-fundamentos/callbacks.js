@@ -1,5 +1,9 @@
 //un callback se ejecuta despues de que sucede algo
 
+/*setTimeout(() => {
+    console.log('Hola mundo');
+}, 3000);*/
+
 let getUsuarioById = (id, callback) => {
     let usuario = {
         nombre: 'Paco',
