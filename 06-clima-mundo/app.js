@@ -14,7 +14,7 @@ const encodedUrl = encodeURI(argv.direccion);
 console.log(encodedUrl);
 
 const instance = axios.create({
-    baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=2e3bc34cd2dcdeb1dc883242e0b4d52f`,
+    baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=youappid`,
     headers: {
         'APPID': '2e3bc34cd2dcdeb1dc883242e0b4d52f'
     }
