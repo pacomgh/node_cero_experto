@@ -1,4 +1,4 @@
-const axios = require('axios');
+/* const axios = require('axios');
 
 const argv = require('yargs').options({
     direccion: {
@@ -14,9 +14,9 @@ const encodedUrl = encodeURI(argv.direccion);
 console.log(encodedUrl);
 
 const instance = axios.create({
-    baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=youappid`,
+    baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=2e3bc34cd2dcdeb1dc883242e0b4d52f`,
     headers: {
-        'APPID': 'yourappid'
+        'APPID': '2e3bc34cd2dcdeb1dc883242e0b4d52f'
     }
 });
 
@@ -26,4 +26,19 @@ instance.get()
     })
     .catch(err => {
         console.log('Error!!!!', err);
-    });
+    }); */
+
+
+const lugar = require('./lugar/lugar');
+
+const argv = require('yargs').options({
+    direccion: {
+        alias: 'd',
+        desc: 'Direccion de la ciudad para obtener el clima',
+        demand: true
+    }
+}).argv;
+
+lugar.getLugarLatLong(argv.direccion)
+    .then(console.log);
+//console.log(argv.direccion);
