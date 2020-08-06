@@ -10,7 +10,7 @@ const getLugarLatLong = async(dir) => {
     const instance = axios.create({
         baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=yourappid`,
         headers: {
-            'APPID': 'youtappid'
+            'APPID': 'yourappid'
         }
     });
 
