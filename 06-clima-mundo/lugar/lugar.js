@@ -5,7 +5,7 @@ const axios = require('axios');
 const getLugarLatLong = async(dir) => {
 
     const encodedUrl = encodeURI(dir);
-    console.log(encodedUrl);
+    //console.log(encodedUrl);
 
     const instance = axios.create({
         baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=yourappid`,
@@ -31,7 +31,7 @@ const getLugarLatLong = async(dir) => {
     const direccion = data.name;
     const lat = data.coord.lat;
     const lng = data.coord.lon;
-    console.log(data);
+    //console.log(data);
 
     return {
         direccion,

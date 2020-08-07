@@ -43,6 +43,32 @@ const argv = require('yargs').options({
 lugar.getLugarLatLong(argv.direccion)
     .then(console.log); */
 //console.log(argv.direccion);  
-clima.getClima(-40.75000, -74.00000)
+/* clima.getClima(-40.75000, -74.00000)
+    .then(console.log)
+    .catch(console.log); */
+
+const getInfo = async(direccion) => {
+    //lo que hizo el profesor
+    try {
+        const coords = await lugar.getLugarLatLong(direccion);
+        const temp = await clima.getClima(coords.lat, coords.lng);
+        return `El clima de ${coords.direccion} es de ${temp}`;
+    } catch (error) {
+        return `No se pudo determinar el clima de ${direccion}`
+    }
+
+
+
+    /* //lo que yo hice
+    info = await lugar.getLugarLatLong(direccion);
+    latitude = info.lat;
+    longitud = info.lng;
+    //console.log("informacion de " + latitude + " " + longitud);
+    weather = clima.getClima(latitude, longitud);
+    console.log(weather);
+    //console.log("clima de :" + clima.getClima(latitude, longitud)); */
+}
+
+getInfo(argv.direccion)
     .then(console.log)
     .catch(console.log);
