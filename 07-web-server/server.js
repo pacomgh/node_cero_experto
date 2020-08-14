@@ -1,9 +1,16 @@
 const express = require('express');
+//const { registerPartial, registerPartials } = require('hbs');
 const app = express();
+const hbs = require('hbs');
 
 //construimos un middleware
 //Es una instruccion o callback siempre sin importar la url que se pida
 app.use(express.static(__dirname + '/public'));
+//express HBS engine
+//usamos dirname porque el url no es local, toma al path en donde se aloja
+//el proyecto y concatenamos la carpeta para tomar el otro archivo
+//registra la carpeta que tiene los parciales para poder usarlos en los html
+hbs.registerPartials(__dirname + '/views/partials');
 //sing hbs as the default view engine requires just 
 //one line of code in your app setup. 
 app.set('view engine', 'hbs');
@@ -24,6 +31,13 @@ app.get('/', (req, res) => { //hace un get de todo lo que esta despues del '/'
     } */
 
     //res.send(salida); //envia como respuesta el objeto salida
+});
+//para crear otra ruta a otra pagina
+app.get('/about', (req, res) => { //hace un get de todo lo que esta despues del '/'
+    //usamos render con hbs para renderizar la pagina - ('pagina')
+    res.render('about', {
+        anio: new Date().getFullYear() //obtiene el año en curso
+    });
 });
 
 //escucha por el puerto 3000
