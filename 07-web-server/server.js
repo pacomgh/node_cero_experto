@@ -2,6 +2,7 @@ const express = require('express');
 //const { registerPartial, registerPartials } = require('hbs');
 const app = express();
 const hbs = require('hbs');
+require('./hbs/helpers');
 
 //construimos un middleware
 //Es una instruccion o callback siempre sin importar la url que se pida
@@ -20,8 +21,7 @@ app.get('/', (req, res) => { //hace un get de todo lo que esta despues del '/'
     //res.send('Hola mundo');
     //usamos render con hbs para renderizar la pagina - ('pagina')
     res.render('home', {
-        nombre: 'Paco',
-        anio: new Date().getFullYear() //obtiene el año en curso
+        nombre: 'francisco'
     });
 
     /* let salida = {
@@ -35,9 +35,7 @@ app.get('/', (req, res) => { //hace un get de todo lo que esta despues del '/'
 //para crear otra ruta a otra pagina
 app.get('/about', (req, res) => { //hace un get de todo lo que esta despues del '/'
     //usamos render con hbs para renderizar la pagina - ('pagina')
-    res.render('about', {
-        anio: new Date().getFullYear() //obtiene el año en curso
-    });
+    res.render('about');
 });
 
 //escucha por el puerto 3000
