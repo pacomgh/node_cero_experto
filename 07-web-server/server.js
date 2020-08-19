@@ -4,6 +4,10 @@ const app = express();
 const hbs = require('hbs');
 require('./hbs/helpers');
 
+//variable de entorno puerto heroku
+//por en local no existe, si port no existe toma el puerto 3000
+const port = process.env.PORT || 3000
+
 //construimos un middleware
 //Es una instruccion o callback siempre sin importar la url que se pida
 app.use(express.static(__dirname + '/public'));
@@ -39,6 +43,12 @@ app.get('/about', (req, res) => { //hace un get de todo lo que esta despues del 
 });
 
 //escucha por el puerto 3000
-app.listen(3000, () => {
-    console.log('Escuchando peticiones por el puerto 3000');
+//desconocemos el puerto por el que se va acorrer en heroku
+app.listen(port, () => {
+    console.log(`Escuchando peticiones por el puerto ${port}`);
 });
+
+/**corremos con: npm start */
+/*npm run nodemon */
+/*agregar comando en package json:
+"start": "node server.js" */
