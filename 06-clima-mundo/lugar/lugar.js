@@ -8,7 +8,7 @@ const getLugarLatLong = async(dir) => {
     //console.log(encodedUrl);
 
     const instance = axios.create({
-        baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=youappid`,
+        baseURL: `http://api.openweathermap.org/data/2.5/forecast?q=${encodedUrl}&APPID=yourappid`,
         headers: {
             'APPID': 'yourappid'
         }
