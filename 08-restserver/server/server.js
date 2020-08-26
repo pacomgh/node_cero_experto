@@ -1,3 +1,6 @@
+//al ser el primer archivo lo lee y ejecuta al principio, configura todo
+//su contenido
+require('./config/config');
 const express = require('express');
 const app = express();
 //body parser procesa la info y la serializa en un json(obtenemos del post)
@@ -50,4 +53,6 @@ app.delete('/usuario', function(req, res) {
     res.json('delete usuario')
 });
 
-app.listen(3000)
+app.listen(process.env.PORT, () => {
+    console.log('Escuchando puerto: ', process.env.PORT);
+});
