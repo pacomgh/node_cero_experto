@@ -1,5 +1,6 @@
 //este archivo maneja las rutas de las acciones para los usuarios
 const express = require('express');
+const bcrypt = require('bcrypt');
 const Usuario = require('../models/usuario'); //importamos el usuario
 
 const app = express();
@@ -18,7 +19,9 @@ app.post('/usuario', function(req, res) {
     let usuario = new Usuario({
         nombre: body.nombre,
         email: body.email,
-        password: body.password,
+        //hashsybnc encripta sin usar callback o promesa, lo hace directamente
+        //(data a encriptar, #de vueltas)
+        password: bcrypt.hashSync(body.password, 10),
         //img: body.img
         role: body.role
     });
@@ -31,6 +34,8 @@ app.post('/usuario', function(req, res) {
                 err //mandamos el error
             });
         }
+        //el objeto siempre existe pero no se manda en la respuesta
+        //usuarioDB.password = null;
         //si se hace correctamente regresamos el usuaio de la bd
         res.json({
             ok: true, //lo hizo correctamente

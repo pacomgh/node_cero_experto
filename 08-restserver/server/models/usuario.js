@@ -7,10 +7,10 @@ let Schema = mongoose.Schema;
 
 //creamos variable para los roles
 let rolesValidos = {
-        values: ['ADMIN_ROLE', 'USER_ROLE'], //definimos los roles permitidos
-        message: '{VALUE} no es un rol válido' //mensaje de error
-    }
-    //definimos el schema
+    values: ['ADMIN_ROLE', 'USER_ROLE'], //definimos los roles permitidos
+    message: '{VALUE} no es un rol válido' //mensaje de error
+};
+//definimos el schema
 let usuarioSchema = new Schema({
     nombre: {
         //tipo de dato que requerimos para este dato<nombre>
@@ -45,7 +45,14 @@ let usuarioSchema = new Schema({
         default: false
     } //boolean
 });
-//
+//para no regresar la contraseña, se llama cuando se intenta imprimir
+usuarioSchema.methods.toJSON = function() {
+    let user = this; //igual a lo ue tenga en ese momento}
+    let userObject = user.toObject(); //obtenemos las propiedades y metodos
+    delete userObject.password; //borramos el password
+
+    return userObject;
+}
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser unico' });
 
 
