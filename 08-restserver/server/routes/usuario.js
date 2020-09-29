@@ -1,14 +1,40 @@
 //este archivo maneja las rutas de las acciones para los usuarios
 const express = require('express');
 const bcrypt = require('bcrypt');
+const _ = require("underscore"); //el estandar es "_"
 const Usuario = require('../models/usuario'); //importamos el usuario
+const usuario = require('../models/usuario');
+
 
 const app = express();
 
+//servicio para paginar y traer a los usuarios en esta app
 app.get('/usuario', function(req, res) {
-        res.json('get usuario local')
-    })
-    //crear nuevos registros
+    //parametros opcionales
+    //desde que registro quieres, si no se indica es desde 0
+    let desde = req.query.desde || 0;
+    desde = Number(desde);
+    let limite = req.query.limite || 5;
+    limite = Number(limite);
+    //regresamos todos los usuarios    
+    usuario.find({})
+        .skip(desde) //obtenemos los siguientes(#)
+        .limit(5) //limitamos la cantidad de registros devueltos
+        .exec((err, usuarios) => { //ejecuta la peticion
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            res.json({
+                ok: true,
+                usuarios
+            });
+
+        });
+});
+//crear nuevos registros
 app.post('/usuario', function(req, res) {
     //el body aparece cuando el body parser procesa cualquier payload
     //de las peticiones
@@ -44,13 +70,34 @@ app.post('/usuario', function(req, res) {
     });
 });
 //actualmente se usa para actualizar informacion
+//usamos el id del registro para hacer las peticiones
 app.put('/usuario/:id', function(req, res) {
     //obtenemos el parametro del id para actualizar
     let id = req.params.id; //id del final es el parametro
-    //retorna lo que se mande en el url como id
-    res.json({
-        id
-    });
+    //obtenemos el body de la peticion
+    //(objeto de las propiedades, arreglo de propiedades permitidos)
+    //quitamos las propiedades que no queramos que toque el usuario
+    let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
+
+    //realizamos la actualizacio con el modelo
+    //busca el id y actualiza si lo encuentra
+    //id, opciones de lo que actualizamos, callback
+    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true },
+        (err, usuarioDB) => {
+            //una vez obtenido el usuario lo guardamos en la bd
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                usuario: usuarioDB
+            });
+        });
+
 });
 //actualmente se usa solo para inhabilitar usuarios
 app.delete('/usuario', function(req, res) {
