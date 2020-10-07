@@ -14,10 +14,12 @@ app.get('/usuario', function(req, res) {
     //desde que registro quieres, si no se indica es desde 0
     let desde = req.query.desde || 0;
     desde = Number(desde);
+    //limite de los registros que se consultan
     let limite = req.query.limite || 5;
     limite = Number(limite);
-    //regresamos todos los usuarios    
-    usuario.find({})
+    //regresamos todos los usuarios   
+    //el argumento es una condifcion especial para incluir ese dato a mostrar
+    usuario.find({ estado: true }, 'nombre email role estado google img')
         .skip(desde) //obtenemos los siguientes(#)
         .limit(5) //limitamos la cantidad de registros devueltos
         .exec((err, usuarios) => { //ejecuta la peticion
@@ -27,11 +29,16 @@ app.get('/usuario', function(req, res) {
                     err
                 });
             }
-            res.json({
-                ok: true,
-                usuarios
-            });
 
+            //count recibe la condicion del find
+            Usuario.count({ estado: true }, (err, conteo) => {
+                //respuesta a postman
+                res.json({
+                    ok: true,
+                    usuarios,
+                    cuantos: conteo //regresa el conteo del dato que se pidio
+                });
+            }); //contamos registros
         });
 });
 //crear nuevos registros
@@ -100,8 +107,38 @@ app.put('/usuario/:id', function(req, res) {
 
 });
 //actualmente se usa solo para inhabilitar usuarios
-app.delete('/usuario', function(req, res) {
-    res.json('delete usuario')
+//aliminamos por el id
+app.delete('/usuario/:id', function(req, res) {
+
+    let id = req.params.id; //hace referencia al id del string
+
+    let cambiaEstado = { estado: false };
+    //hacemos que deje de existir el registro mediante el scheme
+    //mandamos el objeto y el cambio del valor {new:true}
+    Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
+        //para el posible error en la eliminacion
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        };
+        //verificamos si el usuario a borrar existe
+        if (!usuarioBorrado) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'Usuario no encontrado'
+                }
+            });
+        };
+
+        //si todo sale bien. Si se borra hacemos referencia al usuario borrado
+        res.json({
+            ok: true,
+            usuario: usuarioBorrado,
+        });
+    });
 });
 
 //exportamos el archivo de app y que tiene las rutas de este archivo
