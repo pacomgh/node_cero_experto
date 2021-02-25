@@ -1,16 +1,16 @@
 console.log('Inicio del programa');
 
-setTimeout(function() {
+setTimeout(() => {
     console.log('primer timeout');
 
 }, 3000);
 
-setTimeout(function() {
+setTimeout(() => {
     console.log('segundo timeout');
 
 }, 0);
 
-setTimeout(function() {
+setTimeout(() => {
     console.log('tercer timeout');
 
 }, 0);
